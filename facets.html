@@ -1,0 +1,79 @@
+<!doctype html>
+<html ng-app>
+  <head>
+
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/facets.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/esfacets.css">
+
+  </head>
+  <body>
+
+    <div ng-controller="FetchCtrl" class="container">
+
+      <div id="showquery">
+        <pre ng-show="query_data">{{query_data}}</pre>
+      </div>
+
+      <br>
+      <h2>es facets</h2>
+
+      <div>
+
+        <div ng-bind-html-unsafe="dbStatus"></div>
+
+        <br>
+        <input type="text" class="span3" ng-model="searchterm" class="search-query input-medium" placeholder="">
+        <button type="switch" class="btn" ng-click="toggle()">
+          <div ng-hide="def_operator">AND</div>
+          <div ng-show="def_operator">OR</div>
+        </button>
+
+        <button type="submit" class="btn" ng-click="search()">Search</button>
+
+        <br>
+        <br>
+        <div ng-show="result.hits.total" class="hits-total">
+          hits total: {{ result.hits.total }}
+        </div>
+
+        <br>
+        <br>
+
+        <div ng-repeat="(facet_key, facet) in data.facets" class="facet_container">
+
+          <h3>{{facet_key}}</h3>
+
+          <ul>
+            <li ng-repeat="facet_term in facet.terms">
+
+              <label
+                ng-class="{true: 'on', false: 'off'}[facet_collector[facet_key].indexOf(facet_term.term)>-1]"
+                ng-click="update_facet_collector(facet_key, facet_term.term)"
+                ng-model="facet_collector[facet_key][$index]">
+                {{$index + 1}}) {{facet_term.term}} ({{facet_term.count}})
+              </label>
+
+            </li>
+          </ul>
+
+          <br>
+  <!--         <button class="btn btn-small" id="{{facet_key}}">show more</button>
+   -->
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+      </div>
+
+    </div><!-- container end -->
+
+  </body>
+</html>
