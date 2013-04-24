@@ -2,41 +2,40 @@ label {
   padding: 6px;
 }
 
-  .off {
-    background: lightgray;
-  }
-  .on {
-    background: lightgreen;
-  }
+.off {
+  background: lightgray;
+}
+.on {
+  background: lightgreen;
+}
 
 
-  .facet_container {
-    padding: 0;
-    margin: 30px 40px 10px 0px;
-    float: left;
-  }
-  .facet_container ul {
-    list-style: none;
-    margin: 0px;
-  }
+.facet_container {
+  padding: 0;
+  margin: 30px 40px 10px 0px;
+  float: left;
+}
+.facet_container ul {
+  list-style: none;
+  margin: 0px;
+}
 
-  pre {
-    background: black;
-    color: white;
-    font-size: 12px;
-    width: 360px;
-    line-height: 18px;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    padding: 18px;
-  }
+pre {
+  background: black;
+  color: white;
+  font-size: 12px;
+  line-height: 18px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  padding: 18px;
+}
 
-  #showquery {
-    width: 360px;
-    position:absolute;
-    right:0;
-    top:0;
-  }
+#showquery {
+  width: 280px;
+  position:absolute;
+  right:0;
+  top:0;
+}
 
 
 .container {

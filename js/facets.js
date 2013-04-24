@@ -4,17 +4,16 @@ function FetchCtrl($scope, $http, $templateCache) {
     $scope.toggle = function() { $scope.def_operator = !$scope.def_operator; };
 
     $scope.searchterm = "";
+    $scope.query_data = "";
     $scope.facet_collector = {};
     $scope.filter_terms = {};
 
-    $scope.query_data = "";
-
-    $scope.esport = "9201"
-    $scope.indicie = "local" // actresses, local
-
+    $scope.es_url = "http://33.33.33.33";
+    $scope.es_port = "9201";
+    $scope.es_indicie = "local"; // actresses, local
 
     // check es status on start
-    $http.get('http://33.33.33.33:' + $scope.esport)
+    $http.get($scope.es_url + ':' + $scope.es_port)
         .success(function (data) {
             if (data.status === 200) {
                 $scope.dbStatus = data.name + ' is on.';
@@ -26,8 +25,7 @@ function FetchCtrl($scope, $http, $templateCache) {
             $scope.dbStatus = 'no connection to es.';
     });
 
-
-    $scope.searchurl = 'http://33.33.33.33:' + $scope.esport + '/' + $scope.indicie + '/_search';
+    $scope.searchurl = $scope.es_url + ':' + $scope.es_port + '/' + $scope.es_indicie + '/_search';
     $scope.header = {'headers': {'Content-Type': 'application/x-www-form-urlencoded'}};
 
 
@@ -87,7 +85,7 @@ function FetchCtrl($scope, $http, $templateCache) {
             for (var key in $scope.filter_terms) {
                 for (var term in $scope.filter_terms[key]) {
                     console.log("term:", key, typeof(key), $scope.filter_terms[key]);
-                    myterm = {}
+                    myterm = {};
                     myterm["term"] = {};
                     myterm["term"][key] = $scope.filter_terms[key][term];
 
@@ -96,27 +94,18 @@ function FetchCtrl($scope, $http, $templateCache) {
             }
             console.log("x:", x);
 
-            // "or" : [
-            //     {
-            //         "term" : { "name.second" : "banon" }
-            //     },
-            //     {
-            //         "term" : { "name.nick" : "kimchy" }
-            //     }
-            // ]
-
-            // $scope.filter_terms["execution"] = "bool";
-
+            // multiple terms connected with operator
             return {"filtered": {"query": q,
                                  "filter": {"and": x}
                                 }
                     };
 
-
+            // without the operator
             // return {"filtered": {"query": q,
             //                      "filter": {"terms": $scope.filter_terms}
             //                     }
             //         };
+
           }
         }
     };
@@ -149,11 +138,12 @@ function FetchCtrl($scope, $http, $templateCache) {
 
     };
 
+
     $scope.flush_facets = function() {
         $scope.facet_collector = {};
         $scope.filter_terms = {};
         $scope.search();
-    }
+    };
 
 
     $scope.get_facets = function() {
