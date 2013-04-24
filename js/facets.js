@@ -9,9 +9,12 @@ function FetchCtrl($scope, $http, $templateCache) {
 
     $scope.query_data = "";
 
+    $scope.esport = "9201"
+    $scope.indicie = "local" // actresses, local
+
 
     // check es status on start
-    $http.get('http://33.33.33.33:9200')
+    $http.get('http://33.33.33.33:' + $scope.esport)
         .success(function (data) {
             if (data.status === 200) {
                 $scope.dbStatus = data.name + ' is on.';
@@ -24,7 +27,7 @@ function FetchCtrl($scope, $http, $templateCache) {
     });
 
 
-    $scope.searchurl = 'http://33.33.33.33:9200/_search';
+    $scope.searchurl = 'http://33.33.33.33:' + $scope.esport + '/' + $scope.indicie + '/_search';
     $scope.header = {'headers': {'Content-Type': 'application/x-www-form-urlencoded'}};
 
 
@@ -79,10 +82,41 @@ function FetchCtrl($scope, $http, $templateCache) {
           if (Object.keys($scope.filter_terms).length === 0) {
             return q;
           } else {
+
+            var x = [];
+            for (var key in $scope.filter_terms) {
+                for (var term in $scope.filter_terms[key]) {
+                    console.log("term:", key, typeof(key), $scope.filter_terms[key]);
+                    myterm = {}
+                    myterm["term"] = {};
+                    myterm["term"][key] = $scope.filter_terms[key][term];
+
+                    x.push(myterm);
+                }
+            }
+            console.log("x:", x);
+
+            // "or" : [
+            //     {
+            //         "term" : { "name.second" : "banon" }
+            //     },
+            //     {
+            //         "term" : { "name.nick" : "kimchy" }
+            //     }
+            // ]
+
+            // $scope.filter_terms["execution"] = "bool";
+
             return {"filtered": {"query": q,
-                                 "filter": {"term": $scope.filter_terms}
+                                 "filter": {"and": x}
                                 }
                     };
+
+
+            // return {"filtered": {"query": q,
+            //                      "filter": {"terms": $scope.filter_terms}
+            //                     }
+            //         };
           }
         }
     };
@@ -115,18 +149,26 @@ function FetchCtrl($scope, $http, $templateCache) {
 
     };
 
+    $scope.flush_facets = function() {
+        $scope.facet_collector = {};
+        $scope.filter_terms = {};
+        $scope.search();
+    }
+
 
     $scope.get_facets = function() {
 
         facets = {};
-        myfacets = ["geos", "events", "keywords"]; //, "orgs", "persons"];
+        // myfacets = ["name", "role", "year", "title"];
+        myfacets = ["geos", "events", "keywords", "orgs", "persons"];
         myfacets.forEach( function(facet) {
 
             if ($scope.facet_collector[facet] === undefined) {
                 $scope.facet_collector[facet] = [];
             }
 
-            facets[facet] = {"terms": {"field": facet, "size": 10}};
+            facets[facet] = {"terms": {"field": facet, "size": 13}};
+            // facets[facet] = {"terms": {"script_field": "_source." + facet, "size": 13}};
         });
         return facets;
     };

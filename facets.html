@@ -25,7 +25,9 @@
 
         <div ng-bind-html-unsafe="dbStatus"></div>
 
+
         <br>
+        <button class="btn" ng-click="flush_facets()">flush facets</button>
         <input type="text" class="span3" ng-model="searchterm" class="search-query input-medium" placeholder="">
         <button type="switch" class="btn" ng-click="toggle()">
           <div ng-hide="def_operator">AND</div>
