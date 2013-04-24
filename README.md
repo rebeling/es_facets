@@ -12,4 +12,4 @@ Dataset
 -------
 
 If you need a dataset prepared and ready bulk import check this out
-https://github.com/rebeling/esimportpreparation
+https://github.com/rebeling/es_data_import
