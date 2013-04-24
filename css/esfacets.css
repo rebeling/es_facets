@@ -24,7 +24,7 @@ label {
     background: black;
     color: white;
     font-size: 12px;
-    width: 280px;
+    width: 360px;
     line-height: 18px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -32,7 +32,7 @@ label {
   }
 
   #showquery {
-    width: 260px;
+    width: 360px;
     position:absolute;
     right:0;
     top:0;
