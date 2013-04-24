@@ -31,7 +31,7 @@ pre {
 }
 
 #showquery {
-  width: 280px;
+  width: 300px;
   position:absolute;
   right:0;
   top:0;
@@ -39,7 +39,7 @@ pre {
 
 
 .container {
-    width: 940px !important;
+    width: 1070px !important;
 }
 
 .works-true {
